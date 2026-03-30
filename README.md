@@ -23,7 +23,8 @@ m := fastregex.MustCompile(`^github\.com/target/pkg`)
 m.MatchString("github.com/target/pkg/internal/some.Type") // true
 
 // Byte matching
-bm := fastregex.MustNewByteMatcher(`\.Type$`)
+bm, err := fastregex.NewByteMatcher(`\.Type$`)
+if err != nil { return err }
 bm.Match([]byte("github.com/target/pkg/internal/some.Type")) // true
 ```
 
@@ -33,14 +34,15 @@ Comparing `regexp.Regexp.MatchString` (Std) against `fastregex` (Fast) on realis
 
 <!-- BEGIN BENCHMARK CASES -->
 
-| Name | Pattern | Input |
-| --- | --- | --- |
-| Exact | `^github.com/target/pkg/internal/some.Type$` | `github.com/target/pkg/internal/some.Type` |
-| Prefix | `^github.com/target/pkg` | `github.com/target/pkg/internal/some.Type` |
-| Suffix | `some.Type$` | `github.com/target/pkg/internal/some.Type` |
-| Contains | `.Method(` | `(*github.com/target/pkg/internal/some.Type).Method()` |
-| PrefixSuffix | `^github.com/target/pkg.*.Type$` | `github.com/target/pkg/internal/some.Type` |
-| Regex | `^(.*).Method(.*)$` | `(*github.com/target/pkg/internal/some.Type).Method()` |
+| Name         | Pattern                                      | Input                                                  |
+| ------------ | -------------------------------------------- | ------------------------------------------------------ |
+| Exact        | `^github.com/target/pkg/internal/some.Type$` | `github.com/target/pkg/internal/some.Type`             |
+| Prefix       | `^github.com/target/pkg`                     | `github.com/target/pkg/internal/some.Type`             |
+| Suffix       | `some.Type$`                                 | `github.com/target/pkg/internal/some.Type`             |
+| Contains     | `.Method(`                                   | `(*github.com/target/pkg/internal/some.Type).Method()` |
+| PrefixSuffix | `^github.com/target/pkg.*.Type$`             | `github.com/target/pkg/internal/some.Type`             |
+| Regex        | `^(.*).Method(.*)$`                          | `(*github.com/target/pkg/internal/some.Type).Method()` |
+
 <!-- END BENCHMARK CASES -->
 
 <!-- BEGIN BENCHMARKS -->
@@ -56,4 +58,5 @@ Readme/PrefixSuffix-12   494.100n ± 2%   8.534n ± 3%  -98.27% (p=0.000 n=10)
 Readme/Regex-12            819.5n ± 2%   820.6n ± 1%        ~ (p=0.425 n=10)
 geomean                    185.3n        14.69n       -92.07%
 ```
+
 <!-- END BENCHMARKS -->
