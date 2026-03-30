@@ -34,15 +34,14 @@ Comparing `regexp.Regexp.MatchString` (Std) against `fastregex` (Fast) on realis
 
 <!-- BEGIN BENCHMARK CASES -->
 
-| Name         | Pattern                                      | Input                                                  |
-| ------------ | -------------------------------------------- | ------------------------------------------------------ |
-| Exact        | `^github.com/target/pkg/internal/some.Type$` | `github.com/target/pkg/internal/some.Type`             |
-| Prefix       | `^github.com/target/pkg`                     | `github.com/target/pkg/internal/some.Type`             |
-| Suffix       | `some.Type$`                                 | `github.com/target/pkg/internal/some.Type`             |
-| Contains     | `.Method(`                                   | `(*github.com/target/pkg/internal/some.Type).Method()` |
-| PrefixSuffix | `^github.com/target/pkg.*.Type$`             | `github.com/target/pkg/internal/some.Type`             |
-| Regex        | `^(.*).Method(.*)$`                          | `(*github.com/target/pkg/internal/some.Type).Method()` |
-
+| Name | Pattern | Input |
+| --- | --- | --- |
+| Exact | `^github\.com/target/pkg/internal/some\.Type$` | `github.com/target/pkg/internal/some.Type` |
+| Prefix | `^github\.com/target/pkg` | `github.com/target/pkg/internal/some.Type` |
+| Suffix | `some\.Type$` | `github.com/target/pkg/internal/some.Type` |
+| Contains | `\.Method\(` | `(*github.com/target/pkg/internal/some.Type).Method()` |
+| PrefixSuffix | `^github\.com/target/pkg.*\.Type$` | `github.com/target/pkg/internal/some.Type` |
+| Regex | `^\(.*\)\.Method\(.*\)$` | `(*github.com/target/pkg/internal/some.Type).Method()` |
 <!-- END BENCHMARK CASES -->
 
 <!-- BEGIN BENCHMARKS -->
@@ -50,13 +49,12 @@ Comparing `regexp.Regexp.MatchString` (Std) against `fastregex` (Fast) on realis
 ```
                        │      Std      │                Fast                 │
                        │    sec/op     │   sec/op     vs base                │
-Readme/Exact-12           74.005n ± 2%   5.344n ± 2%  -92.78% (p=0.000 n=10)
-Readme/Prefix-12          62.990n ± 3%   4.611n ± 3%  -92.68% (p=0.000 n=10)
-Readme/Suffix-12         155.700n ± 2%   4.653n ± 3%  -97.01% (p=0.000 n=10)
-Readme/Contains-12        137.70n ± 2%   12.50n ± 2%  -90.92% (p=0.000 n=10)
-Readme/PrefixSuffix-12   494.100n ± 2%   8.534n ± 3%  -98.27% (p=0.000 n=10)
-Readme/Regex-12            819.5n ± 2%   820.6n ± 1%        ~ (p=0.425 n=10)
-geomean                    185.3n        14.69n       -92.07%
+Readme/Exact-12           74.260n ± 2%   5.370n ± 2%  -92.77% (p=0.000 n=10)
+Readme/Prefix-12          64.325n ± 2%   4.846n ± 2%  -92.47% (p=0.000 n=10)
+Readme/Suffix-12         154.200n ± 2%   4.603n ± 3%  -97.02% (p=0.000 n=10)
+Readme/Contains-12        141.00n ± 4%   12.57n ± 1%  -91.09% (p=0.000 n=10)
+Readme/PrefixSuffix-12   500.750n ± 2%   8.672n ± 3%  -98.27% (p=0.000 n=10)
+Readme/Regex-12            827.4n ± 2%   821.4n ± 2%        ~ (p=0.670 n=10)
+geomean                    187.2n        14.85n       -92.07%
 ```
-
 <!-- END BENCHMARKS -->

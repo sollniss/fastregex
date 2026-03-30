@@ -40,15 +40,15 @@ fi
 BEGIN_CASES="<!-- BEGIN BENCHMARK CASES -->"
 END_CASES="<!-- END BENCHMARK CASES -->"
 
-awk -v begin="$BEGIN_CASES" -v end="$END_CASES" -v content="$CASES" '
-	$0 ~ begin { print; printf "\n%s\n", content; skip=1; next }
+CASES="$CASES" awk -v begin="$BEGIN_CASES" -v end="$END_CASES" '
+	$0 ~ begin { print; printf "\n%s\n", ENVIRON["CASES"]; skip=1; next }
 	$0 ~ end   { skip=0 }
 	!skip       { print }
 ' "$README" > "${README}.tmp" && mv "${README}.tmp" "$README"
 
 # Replace benchmark results between markers.
-awk -v begin="$BEGIN" -v end="$END" -v content="$SECOP" '
-	$0 ~ begin { print; printf "\n```\n%s\n```\n", content; skip=1; next }
+SECOP="$SECOP" awk -v begin="$BEGIN" -v end="$END" '
+	$0 ~ begin { print; printf "\n```\n%s\n```\n", ENVIRON["SECOP"]; skip=1; next }
 	$0 ~ end   { skip=0 }
 	!skip       { print }
 ' "$README" > "${README}.tmp" && mv "${README}.tmp" "$README"
